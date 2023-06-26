@@ -9,7 +9,7 @@ const Form = ({ searchMovies }) => {
   };
 
   const handleSubmit = e => {
-    e.preventDefault;
+    e.preventDefault();
     searchMovies(query.toLowerCase());
   };
 
