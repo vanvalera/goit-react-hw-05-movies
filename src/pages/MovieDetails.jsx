@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link, Outlet, useLocation } from 'react-router-dom';
 import Loader from 'components/Loader/Loader';
 import { fetchMovieDetails } from 'services/api';
+import css from './MovieDetails.module.css';
 
 const MovieDetails = () => {
   const { movieId } = useParams();
@@ -44,9 +45,13 @@ const MovieDetails = () => {
 
   return (
     <>
-      <Link to={location.state?.from ?? '/'}>
-        <button type="button">Go back</button>
-      </Link>
+      <div className={css.button_box}>
+        <Link to={location.state?.from ?? '/'}>
+          <button type="button" className={css.button}>
+            Go back
+          </button>
+        </Link>
+      </div>
       {loading && <Loader />}
 
       {movieInfo && (
