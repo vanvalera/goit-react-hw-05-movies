@@ -2,6 +2,7 @@ import { fetchSearchKeyword } from 'services/api';
 import { useState } from 'react';
 import Loader from 'components/Loader/Loader';
 import EditorList from './EditorList';
+import css from './Movies.module.css';
 
 const Movies = () => {
   const [searchFilms, setsearchFilms] = useState([]);
@@ -29,7 +30,7 @@ const Movies = () => {
   };
 
   return (
-    <main>
+    <main className={css.main}>
       <form onSubmit={searchMovie}>
         <input type="text" name="searchMovie" />
         <button type="submit">Search</button>
