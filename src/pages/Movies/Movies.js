@@ -1,25 +1,35 @@
 import { fetchSearchKeyword } from 'services/api';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Loader from 'components/Loader/Loader';
-import EditorList from './EditorList';
+import EditorList from 'pages/EditorList/EditorList';
 import css from './Movies.module.css';
+import MovieSearchForm from 'components/MovieSearchForm/MovieSeacrhForm';
 
 const Movies = () => {
   const [searchFilms, setsearchFilms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [noMovieText, setNoMovieText] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const searchMovie = event => {
-    event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+  useEffect(() => {
+    const lastQuery = localStorage.getItem('lastQuery');
+    if (lastQuery) {
+      setSearchQuery(lastQuery);
+    }
+  }, []);
 
-    const queryMovie = event.target.elements.searchMovie.value;
+  useEffect(() => {
+    localStorage.setItem('lastQuery', searchQuery);
+  }, [searchQuery]);
 
+  const searchMovie = query => {
     setLoading(true);
 
-    fetchSearchKeyword(queryMovie)
+    fetchSearchKeyword(query)
       .then(searchResults => {
         setsearchFilms(searchResults);
         setNoMovieText(searchResults.length === 0);
+        setSearchQuery(query);
       })
       .catch(error => {
         console.log(error);
@@ -31,10 +41,11 @@ const Movies = () => {
 
   return (
     <main className={css.main}>
-      <form onSubmit={searchMovie}>
-        <input type="text" name="searchMovie" />
-        <button type="submit">Search</button>
-      </form>
+      <MovieSearchForm
+        searchMovie={searchMovie}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
 
       {loading && <Loader />}
 

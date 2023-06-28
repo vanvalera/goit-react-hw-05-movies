@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchTrending } from 'services/api';
 import Loader from 'components/Loader/Loader';
-import EditorList from './EditorList';
+import EditorList from 'pages/EditorList/EditorList';
 import css from './Home.module.css';
 
 const Home = () => {
