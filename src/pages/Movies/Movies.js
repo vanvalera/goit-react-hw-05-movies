@@ -4,23 +4,21 @@ import Loader from 'components/Loader/Loader';
 import EditorList from 'pages/EditorList/EditorList';
 import css from './Movies.module.css';
 import MovieSearchForm from 'components/MovieSearchForm/MovieSeacrhForm';
+import { useSearchParams } from 'react-router-dom';
 
 const Movies = () => {
   const [searchFilms, setsearchFilms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [noMovieText, setNoMovieText] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
-    const lastQuery = localStorage.getItem('lastQuery');
-    if (lastQuery) {
-      setSearchQuery(lastQuery);
+    const query = searchParams.get('query');
+    if (query) {
+      setSearchQuery(query);
     }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('lastQuery', searchQuery);
-  }, [searchQuery]);
+  }, [searchParams]);
 
   const searchMovie = query => {
     setLoading(true);
@@ -29,7 +27,7 @@ const Movies = () => {
       .then(searchResults => {
         setsearchFilms(searchResults);
         setNoMovieText(searchResults.length === 0);
-        setSearchQuery(query);
+        setSearchParams({ query });
       })
       .catch(error => {
         console.log(error);
