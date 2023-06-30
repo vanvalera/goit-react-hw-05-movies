@@ -10,17 +10,14 @@ const Movies = () => {
   const [searchFilms, setsearchFilms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [noMovieText, setNoMovieText] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const query = searchParams.get('query');
   useEffect(() => {
-    const query = searchParams.get('query');
     if (!query) {
       return;
     }
-    if (query) {
-      setSearchQuery(query);
-    }
+
     setLoading(true);
     fetchSearchKeyword(query)
       .then(searchResults => {
@@ -33,7 +30,7 @@ const Movies = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [setSearchParams, searchParams]);
+  }, [query]);
 
   const searchMovie = query => {
     setSearchParams({ query });
@@ -41,11 +38,7 @@ const Movies = () => {
 
   return (
     <main className={css.main}>
-      <MovieSearchForm
-        searchMovie={searchMovie}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-      />
+      <MovieSearchForm searchMovie={searchMovie} searchQuery={query} />
 
       {loading && <Loader />}
 

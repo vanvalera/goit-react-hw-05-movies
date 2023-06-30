@@ -1,15 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-const MovieSearchForm = ({ searchMovie, searchQuery, setSearchQuery }) => {
-  const [query, setQuery] = useState('');
-
-  useEffect(() => {
-    setQuery(searchQuery);
-  }, [searchQuery]);
+const MovieSearchForm = ({ searchMovie, searchQuery }) => {
+  const [query, setQuery] = useState(searchQuery);
 
   const handleSubmit = event => {
     event.preventDefault();
-    setSearchQuery(query);
     searchMovie(query);
   };
 
